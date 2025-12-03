@@ -1,0 +1,95 @@
+    <h1>STARBOYS</h1>
+
+    <div class ="Hello">
+        <p>
+            
+        </p>
+    </div>
+
+    <video width="640" height="360" autoplay loop muted playsinline>
+        <source src="lowfantasia.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <section id="about">
+        <h2>About</h2>
+        <p>Low Fantasia is a 2D metroidvania where players explore interconnected levels, unlock new spells, and take on challenging enemies and bosses.. 
+            I worked on this during my first year of university, and it was made in the Unity game engine using c#.</p>
+    </section>
+
+    <section id="Project Infomation">
+        <h2>Project Information</h2>
+        <p>Role: Gameplay programmer</p>
+        <p>Teamsize: Solo</p>
+        <p>Time frame: 8 weeks</p>
+        <p>Engine: Unity</p>
+        <p>Language: C#</p>
+    </section>
+
+    <section id="Introduction">
+        <h2>Introduction</h2>
+        <p>My goal with Low Fantasia was to improve my game architecture and optimisation skills. I thought a metroidvania would be a great way to practise this. 
+            I spent a lot of time focusing on persistent data that carries over to new scenes, as well as Optimisation. 
+            I also wanted to get a better understanding on enemy AI by working on some enemies and a boss.
+        </p>
+    </section>
+
+    <section id="Combat">
+        <h2>Combat</h2>
+        <p></p>
+    </section>
+
+    <section id="Saving">
+        <h2>Saving</h2>
+        <p></p>
+    </section>
+
+    <section id="Player Movement System">
+        <h2>Player Movement System</h2>
+        <p>Overview: Developed a versitile 2D player controller supporting platforming, exploration and combat</p>
+        <p>Key Features
+
+            Core Movement: Smooth horizontal movement with direction flipping, tuned acceleration, and handling for both grounded and airborne states.
+
+Advanced Jumping: Variable jump heights, multiple jumps, and double jump tracking via a jump counter system.
+
+Environmental Interactions: Climbing (walls), hanging (ceilings/ledges), and gravity adjustments depending on state.
+
+Ability Integration: Centralized booleans and event system to toggle movement abilities (jump, double jump, climb, hang, dash, freeze, slam) as they are unlocked.
+
+Animation Handling: Direct integration with an animation state machine for responsive transitions (idle, run, jump, climb, hang).
+        </p>
+        <p>
+            Technical Design Choices
+
+Used Unity’s physics system (Rigidbody2D, OverlapBox, OverlapCircle) for ground/wall/ceiling detection to keep movement grounded in physics.
+
+Normalized input through a dedicated handler (GetHorizontalInput) to ensure consistent control across different states.
+
+Implemented state checks (isGrounded, isClimbing, isHanging) to avoid conflicting abilities and guarantee predictable behavior.
+
+Applied modular ability management (AddMovementAbility, SetAbilitiesStatus) to allow seamless progression when new abilities unlock.
+        </p>
+        <p>
+            Challenges & Solutions
+
+Challenge: Jump consistency varied at different framerates.
+Solution: Used FixedUpdate for physics calculations and adjusted force application with deltaTime to keep jump height consistent.
+
+Challenge: Preventing combat inputs from interfering with climbing/hanging states.
+Solution: Disabled attack functionality (PlayerCombat.Instance.canAttack) during climb/hang states, restoring it when grounded or released.
+
+Challenge: Handling “drop from hang” mechanics without breaking gravity.
+Solution: Wrote a coroutine (Drop()) that temporarily disables hanging, restores gravity, and re-enables abilities after a cooldown.
+        </p>
+    </section>
+
+    <section id="Optimisation">
+        <h2>Optimisation</h2>
+        <p></p>
+    </section>
+
+    <section id="What I learnt">
+        <h2>What I learnt</h2>
+        <p></p>
+    </section>
