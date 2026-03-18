@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Metroidvania Project – Gameplay Programming Portfolio</title>
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <h1 class="hero-title">Untitled Metroidvania</h1>
+
+    <p class="hero-sub">
+        A 2D metroidvania prototype built in Unity (C#), focused on tight platforming, 
+        modular combat systems, ability-driven progression, and scalable enemy AI architecture.
+        I designed and implemented all core gameplay systems.
+    </p>
+
+    <video class="media" src="lowfantasia.mp4" autoplay muted loop></video>
+
+    <p>
+        <strong>Role:</strong> Gameplay Programmer<br>
+        <strong>Engine:</strong> Unity (C#)
+    </p>
+</section>
+
+
+<!-- TECHNICAL OVERVIEW -->
+<section>
+    <h2>Technical Overview</h2>
+
+    <div class="feature-grid">
+
+        <div class="feature-card">
+            <h3>Ability-Driven Progression</h3>
+            <p>
+                Player traversal and combat abilities are implemented as modular components,
+                enabling gated progression and clean expansion of movement mechanics.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>State-Based Player Controller</h3>
+            <p>
+                Custom finite state machine manages grounded, airborne, dash, attack,
+                and ability states without relying on Animator transitions.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Combat Framework</h3>
+            <p>
+                Hit detection, damage handling, knockback, invulnerability frames,
+                and enemy reactions are handled through interface-driven contracts.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Modular Enemy AI</h3>
+            <p>
+                Coroutine-driven enemy behavior cycles with clear state transitions
+                for patrol, chase, attack, stagger, and death.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Ability Gating System</h3>
+            <p>
+                World traversal checks player ability flags to control access to
+                new areas, reinforcing classic metroidvania progression design.
+            </p>
+        </div>
+
+        <div class="feature-card">
+            <h3>Performance-Conscious Design</h3>
+            <p>
+                Object pooling, allocation-aware physics checks, and centralized
+                managers ensure stable runtime performance.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- PLAYER CONTROLLER -->
+<section class="section">
+    <details>
+        <summary class="collapsableTitle">
+            Player Controller & Movement Systems
+            <video class="media" src="videos/Hanging.mkv" autoplay muted loop></video>
+            <video class="media" src="videos/DashAcquired.mkv" autoplay muted loop></video>
+            <video class="media" src="videos/WallClimbing.mkv" autoplay muted loop></video>
+            <p>
+                Designed a responsive Rigidbody-based controller with deterministic
+                horizontal control, coyote time, jump buffering, and dash handling.
+            </p>
+        </summary>
+
+        <h3>Core Movement</h3>
+        <p>
+            Horizontal velocity is directly controlled while vertical movement
+            respects physics interactions for precise platforming.
+        </p>
+
+<pre><code>
+// Horizontal movement
+float xInput = input.move.x;
+rb.velocity = new Vector2(xInput * moveSpeed, rb.velocity.y);
+</code></pre>
+
+        <h3>Jump Buffer & Coyote Time</h3>
+        <p>
+            Implemented timing buffers to improve responsiveness and eliminate
+            input frustration common in precision platformers.
+        </p>
+
+<pre><code>
+if (jumpBufferCounter > 0 && coyoteTimeCounter > 0)
+{
+    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+}
+</code></pre>
+
+        <h3>Dash Implementation</h3>
+        <p>
+            Dash temporarily overrides gravity and locks direction input
+            to maintain consistent burst movement.
+        </p>
+
+<pre><code>
+rb.gravityScale = 0;
+rb.velocity = new Vector2(dashDirection * dashSpeed, 0);
+</code></pre>
+
+    </details>
+</section>
+
+
+<!-- COMBAT SYSTEM -->
+<section class="section">
+    <details>
+        <summary class="collapsableTitle">
+            Combat System
+            <video class="media" src="videos/BalloonBoy.mkv" autoplay muted loop></video>
+            <video class="media" src="videos/DefeatingGrubs.mkv" autoplay muted loop></video>          
+            <p>
+                Built a modular combat framework supporting melee attacks,
+                enemy damage handling, and knockback reactions.
+            </p>
+        </summary>
+
+        <h3>Hit Detection</h3>
+        <p>
+            Physics overlap checks detect valid damage targets implementing
+            a shared <code>IDamageable</code> interface.
+        </p>
+
+<pre><code>
+foreach (Collider2D hit in Physics2D.OverlapCircleAll(attackPoint.position, attackRadius))
+{
+    if (hit.TryGetComponent(out IDamageable damageable))
+        damageable.TakeDamage(damageAmount);
+}
+</code></pre>
+
+        <h3>Invulnerability Frames</h3>
+        <p>
+            Damage triggers temporary invulnerability and visual feedback,
+            preventing repeated collision-based damage.
+        </p>
+
+    </details>
+</section>
+
+
+<!-- ENEMY AI -->
+<section class="section">
+    <details>
+        <summary class="collapsableTitle">
+            Enemy AI Architecture
+            <video class="media" src="videos/BossFight.mkv" autoplay muted loop></video>
+            <p>
+                Implemented coroutine-driven AI state loops to manage patrol,
+                aggro detection, attack timing, and recovery states.
+            </p>
+        </summary>
+
+        <h3>Detection System</h3>
+        <p>
+            Radius-based detection checks for player presence and transitions
+            to pursuit state when triggered.
+        </p>
+
+<pre><code>
+if (Vector2.Distance(transform.position, player.position) < detectionRange)
+{
+    currentState = EnemyState.Chase;
+}
+</code></pre>
+
+        <h3>Attack Cycle</h3>
+        <p>
+            Attack sequences are controlled via coroutine timing rather than
+            Animator state graphs, improving clarity and flexibility.
+        </p>
+
+    </details>
+</section>
+
+
+<!-- WORLD & PROGRESSION -->
+<section class="section">
+    <h2>World Systems & Progression</h2>
+
+    <video class="media" src="videos/ElevatorFixed.mkv" autoplay muted loop></video>
+    <video class="media" src="videos/Shop.mkv" autoplay muted loop></video>
+    <p>
+        Designed ability-based traversal gating, ensuring players unlock
+        new regions through earned movement mechanics (double jump, dash,
+        wall climb, etc.).
+    </p>
+
+<pre><code>
+// Ability check example
+if (playerAbilities.canDoubleJump)
+{
+    OpenPath();
+}
+</code></pre>
+
+</section>
+
+
+<!-- SAVE SYSTEM -->
+<section class="section">
+    <h2>Persistence & Save System</h2>
+
+    <p>
+        Implemented JSON-based saving of player progression, unlocked abilities,
+        and checkpoint positions.
+    </p>
+
+<pre><code>
+string json = JsonUtility.ToJson(saveData, true);
+File.WriteAllText(savePath, json);
+</code></pre>
+
+</section>
+
+
+<!-- ENGINEERING CHALLENGES -->
+<section class="section">
+    <h2>Engineering Challenges Solved</h2>
+
+    <ul>
+        <li>Designed extensible ability framework without hard-coded progression checks</li>
+        <li>Balanced responsiveness and physics authenticity in player controller</li>
+        <li>Decoupled combat logic from animation state machines</li>
+        <li>Maintained scalable AI architecture for future enemy expansion</li>
+    </ul>
+
+</section>
+
+
+</div>
+</body>
+</html>
